@@ -7,6 +7,7 @@ const passport = require("passport");
 const LocalStrategy = require('passport-local').Strategy;
 require('dotenv').config();
 const client=require("./db.js");
+const bcrypt = require('bcryptjs');
 
 const app = express();
 
@@ -29,9 +30,12 @@ passport.use(
       if (!user) {
         return done(null, false, { message: "Incorrect username" });
       }
-      if (user.password !== password) {
-        return done(null, false, { message: "Incorrect password" });
+      const match = await bcrypt.compare(password, user.password);
+      if (!match) {
+        // passwords do not match!
+        return done(null, false, { message: "Incorrect password" })
       }
+      
       return done(null, user);
     } catch(err) {
       return done(err);
@@ -56,10 +60,16 @@ passport.deserializeUser(async (id, done) => {
 app.post("/api/sign-up", async (req, res, next) => {
 
   try {
-    await client.query("INSERT INTO users (username, password) VALUES ($1, $2)", [
+    bcrypt.hash(req.body.password, 10, async (err, hashedPassword) => {
+      // if err, do something
+      // otherwise, store hashedPassword in DB
+       await client.query("INSERT INTO users (username, password) VALUES ($1, $2)", [
       req.body.username,
-      req.body.password,
+      hashedPassword,
     ]);
+    });
+    
+   
     res.status(200).send({good: "it's okey"})
   } catch(err) {
     return next(err);
