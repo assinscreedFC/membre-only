@@ -13,6 +13,7 @@ function Singin(){
         <div className="flex justify-center items-center w-full h-5/6">
             <form action="" method="post" onSubmit={sub} className="bg-white/5 md:w-fit
             w-11/12  flex items-center flex-col md:gap-8 p-8 rounded-md border-4 border-blue-900 gap-4 ">
+                <legend className="text-white text-lg font-semibold">sing-in</legend>
             <div className="flex flex-col md:flex-row gap-2">
                 <label htmlFor="title" className="text-lg font-medium text-white">userName: </label>
                 <input

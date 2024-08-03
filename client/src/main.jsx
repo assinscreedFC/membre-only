@@ -11,6 +11,8 @@ import App from './App.jsx'
 import './index.css'
 
 import Singin from './components/Singin.jsx'
+import Logein from './components/Logein.jsx';
+import Choice from './components/Choice.jsx';
 
 const router=createBrowserRouter([{
     path: "/",
@@ -18,7 +20,7 @@ const router=createBrowserRouter([{
     children: [
       {
         path: "/",
-        element: <Navigate to="signe-in"/>
+        element: <Choice/>
       },
       {
         path:"signe-in",
@@ -26,8 +28,11 @@ const router=createBrowserRouter([{
       },
       {
         path:"login",
-        element: <h1>login</h1>
-
+        element: <Logein/>
+      },
+      {
+        path:"succes",
+        element: <div>Home</div>
       }
     ]
 }])
