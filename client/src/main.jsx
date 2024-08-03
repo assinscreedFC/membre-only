@@ -32,7 +32,7 @@ const router=createBrowserRouter([{
       },
       {
         path:"succes",
-        element: <h1>FELECITATION</h1>
+        element: <h1 className='font-semibold text-white'>FELECITATION</h1>
       }
     ]
 }])

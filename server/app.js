@@ -6,7 +6,7 @@ const session = require("express-session");
 const passport = require("passport");
 const LocalStrategy = require('passport-local').Strategy;
 require('dotenv').config();
-const {client}=require("./db.js");
+const client=require("./db.js");
 
 const app = express();
 
@@ -19,17 +19,6 @@ app.use(express.urlencoded({ extended: false }));
 //
 
 
-app.post("/sign-up", async (req, res, next) => {
-  try {
-    await client.query("INSERT INTO users (username, password) VALUES ($1, $2)", [
-      req.body.username,
-      req.body.password,
-    ]);
-    res.status(200).send({good: "it's okey"})
-  } catch(err) {
-    return next(err);
-  }
-});
 
 passport.use(
   new LocalStrategy(async (username, password, done) => {
@@ -64,16 +53,28 @@ passport.deserializeUser(async (id, done) => {
     done(err);
   }
 });
+app.post("/api/sign-up", async (req, res, next) => {
+
+  try {
+    await client.query("INSERT INTO users (username, password) VALUES ($1, $2)", [
+      req.body.username,
+      req.body.password,
+    ]);
+    res.status(200).send({good: "it's okey"})
+  } catch(err) {
+    return next(err);
+  }
+});
 
 app.post(
-  "/log-in",
+  "/api/log-in",
   passport.authenticate("local", {
-    successRedirect: "./succes",
+    successRedirect: "../succes",
     failureRedirect: "/"
   })
 );
 
-app.get("/", (req, res) => {
+app.get("/api", (req, res) => {
   if(req.user){
     res.status(200)
   }
@@ -89,7 +90,7 @@ app.get("/", (req, res) => {
 
 // Route to get user data
 app.get("/api/mp", (req, res) => {
-  res.send(us);
+  res.send("cc");
 });
 
 

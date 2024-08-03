@@ -1,11 +1,23 @@
+import axios from "axios";
 import { useState } from "react"
 
 function Singin(){
     const [user,setuser]=useState('');
     const [password,setpassword]=useState('');
 
-    const sub =(e)=>{
+    const sub =async (e)=>{
         e.preventDefault();
+        try{
+        const bb= await axios.post("/api/sign-up" ,{username:user,password: password}, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+        console.log(bb);
+        }catch (e){
+            console.log(e);
+        }
+       
     }
 
     return(

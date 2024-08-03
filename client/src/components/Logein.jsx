@@ -1,11 +1,29 @@
 import { useState } from "react"
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function Logein(){
     const [user,setuser]=useState('');
     const [password,setpassword]=useState('');
+    const navigate = useNavigate();
 
-    const sub =(e)=>{
+    const sub = async (e)=>{
         e.preventDefault();
+        try{
+            const bb= await axios.post("/api/log-in" ,{username:user,password: password}, {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+            console.log(bb.request.responseURL)
+            window.location.href=bb.request.responseURL
+            
+           
+            
+            console.log(bb);
+            }catch (e){
+                console.log(e);
+            }
     }
 
     return(
